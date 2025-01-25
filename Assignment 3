@@ -14,3 +14,28 @@ print('\n',df)
 
 #MyVar=pd.Series(data,index=[1,2,3])
 #print(MyVar)
+
+#Q2
+print('Q2')
+print('\n')
+print(df.loc[0])
+print('\n')
+print(df.loc[4])
+print('\n')
+print(df.loc[7])
+print('\n')
+print(df.loc[8])
+
+#Q3
+print('\n')
+print('Q3')
+print('\n')
+print(df.iloc[3:8])
+print('\n')
+print(df.iloc[2:4, 4:9])#problem no prnting
+
+#Q4
+
+df=pd.read_csv('Iris.csv')
+
+print(df)
