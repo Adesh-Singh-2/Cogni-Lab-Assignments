@@ -1,0 +1,16 @@
+#Q1
+import pandas as pd
+
+data= {
+       'Refund':['Yes','No','No','Yes','No','No','Yes','No','No','No'],
+        'Maritial Status':['Single','Married','Single','Married','Divorced','Married','Divorced','Single','Married','Single'],
+        'Taxable Income':['125k','100k','70k','120k','95k','60k','22k','85k','75k','90k'],
+        'Cheat':['No','No','No','No','Yes','No','No',"Yes",'No','Yes']}
+
+df = pd.DataFrame(data)
+df.index.name='Tid'
+
+print('\n',df)
+
+#MyVar=pd.Series(data,index=[1,2,3])
+#print(MyVar)
