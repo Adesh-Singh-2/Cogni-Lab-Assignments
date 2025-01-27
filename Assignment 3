@@ -32,7 +32,8 @@ print('Q3')
 print('\n')
 print(df.iloc[3:8])
 print('\n')
-print(df.iloc[2:4, 4:9])#problem no prnting
+da=df.iloc[4:8, 2:4]
+print(da)
 
 #Q4
 
