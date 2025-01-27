@@ -54,6 +54,9 @@ print(df.head(5))
 import pandas as pd
 
 # Create the dataset as a dictionary
+import pandas as pd
+
+# Create the dataset as a dictionary
 data = {
     "Employee_ID": ["101", "102", "103", "104", "105"],
     "Name": ["Alice", "Bob", "Charlie", "Dana", "Edwards"],
@@ -68,7 +71,20 @@ data = {
 
 
 df = pd.DataFrame(data)
-
+print(df)
+print('\n')
+print("5 columns and 9 rows")
+print(df.shape)
+print('\n')
+print(df.info())
+print('\n')
+print(df.describe())
+print('\n')
+print(df.head())
+print(df.tail(3))
+print('\n')
+avg_salary=df['Salary'].mean()
+print('Average salary is:',avg_salary)
 
 
 
