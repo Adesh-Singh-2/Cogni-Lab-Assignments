@@ -1,0 +1,16 @@
+#Q1 a
+a = np.array([0,1,2,3,4])
+b = a+2
+print(b)
+#b
+c = a*3
+print(c)
+#c
+d=a/2
+print(d)
+
+#Q2 a
+arr=np.array([1,2,3,6,4,5])
+e= np.flip(arr)
+print(e)
+#b 
