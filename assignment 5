@@ -1,0 +1,19 @@
+#Q1
+gfg=np.matrix('[4,1,9; 12,3,2; 4,5,6]')
+sum=np.sum(gfg)
+Rsum=np.sum(gfg,axis=1)
+Csum=np.sum(gfg,axis=0)
+
+print(sum)
+
+print(Rsum)
+
+print(Csum)
+#Q2(a)
+
+array=np.array([10,52,62,16,16,54,453])
+sorted=np.sort(array)
+print(sorted)
+sorted_indices = np.argsort(array)
+print(sorted_indices)
+print(sorted[0:4]) 
