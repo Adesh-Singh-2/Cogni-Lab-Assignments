@@ -17,3 +17,6 @@ print(sorted)
 sorted_indices = np.argsort(array)
 print(sorted_indices)
 print(sorted[0:4]) 
+sorted_array_desc = np.sort(array)[::-1] 
+five_largest = sorted_array_desc[:5] 
+print(five_largest)
