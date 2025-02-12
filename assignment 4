@@ -26,3 +26,50 @@ Q3
 arr=np.array([[10,20,30],[40,50,60],[70,80,90]])
 print(arr[0,1])
 print(arr[2,0])
+
+#Q4
+import numpy as np
+Adesh_singh = np.linspace(10, 100, 25)
+
+print("Array:", Adesh_singh)
+print("Dimensions:", Adesh_singh.ndim)
+print("Shape:", Adesh_singh.shape)
+print("Total elements:", Adesh_singh.size)
+print("Data type of each element:", Adesh_singh.dtype)
+print("Total bytes consumed by the array:", Adesh_singh.nbytes)
+
+Adesh_singh_transposed = Adesh_singh.reshape(25, 1)
+print("Transposed Array using reshape():\n", Adesh_singh_transposed)
+
+Adesh_singh_T = Adesh_singh.T
+print("Transposed Array using .T attribute:", Adesh_singh_T)
+
+if np.array_equal(Adesh_singh, Adesh_singh_T):
+    print(".T does not change a 1-D array; it remains the same.")
+else:
+    print(".T successfully transposed the array.")
+
+
+#5
+import numpy as np
+
+ucs420_Adesh_Singh=np.array([[10,20,30,40],[50,60,70,80],[90,15,20,35]])
+print(ucs420_Adesh_Singh)
+mean=np.mean(ucs420_Adesh_Singh)
+print(mean)
+median=np.median(ucs420_Adesh_Singh)
+print(median)
+min=np.min(ucs420_Adesh_Singh)
+
+max=np.max(ucs420_Adesh_Singh)
+
+print(max)
+print(min)
+unique_element=np.unique(ucs420_Adesh_Singh)
+print(unique_element)
+print(np.shape(ucs420_Adesh_Singh))
+Reshape_ucs420_Adesh_Singh=ucs420_Adesh_Singh.reshape(4,3)
+print(Reshape_ucs420_Adesh_Singh)
+
+resize_ucs420_Adesh_Singh=np.resize(ucs420_Adesh_Singh,(2,3))
+print(resize_ucs420_Adesh_Singh)
