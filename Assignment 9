@@ -1,0 +1,104 @@
+#Q1
+pip install nltk==3.8.0
+
+
+import string
+import re
+import nltk
+nltk.download('punkt')
+from nltk.tokenize import word_tokenize
+import nltk
+nltk.download('stopwords')
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer,LancasterStemmer,WordNetLemmatizer
+from nltk.tokenize import sent_tokenize
+from nltk import pos_tag
+nltk.download('wordnet')
+from nltk.corpus import wordnet
+
+
+
+paragraph='''
+Technology has become the heartbeat of modern life, connecting people across continents at the speed of thought. From artificial intelligence transforming industries to wearable gadgets monitoring health in real-time, it’s revolutionizing how we live, work, and play. The evolution of tech, like self-driving cars and virtual reality, blurs the lines between the physical and digital worlds. It empowers innovation yet sparks ethical debates about its influence on privacy and society. In essence, technology isn’t just about tools—it’s about the endless possibilities they unlock.
+'''
+paragraph
+
+
+A)
+paragraph=paragraph.lower()
+paragraph=paragraph.translate(str.maketrans('', '', string.punctuation))
+paragraph
+
+B)
+words=word_tokenize(paragraph)
+sentences=sent_tokenize(paragraph)
+len(words), len(sentences)
+
+
+C)
+stop_words=set(stopwords.words('english'))
+filtered_words=[word for word in words if word not in stop_words]
+len(filtered_words)
+
+D)
+import pandas as pd
+df=pd.DataFrame(filtered_words, columns=['word'])
+df.value_counts().reset_index(name='count').rename(columns={'index':'word'}).sort_values(by='count', ascending=False).head(10)
+
+
+#Q2
+stemmer=PorterStemmer()
+stemmed_words=[stemmer.stem(word) for word in filtered_words]
+
+lancaster_stemmer=LancasterStemmer()
+lancaster_words=[lancaster_stemmer.stem(word) for word in filtered_words]
+
+wordnet_lemmatizer=WordNetLemmatizer()
+wordnet_words=[wordnet_lemmatizer.lemmatize(word) for word in filtered_words]
+
+df=pd.DataFrame({'original':filtered_words, 'stemmed':stemmed_words, 'lancaster':lancaster_words, 'lemmatized':wordnet_words})
+df
+
+#Q3
+
+2a)
+pattern=r'\b[a-zA-Z]{5,}\b'
+filtered_words=re.findall(pattern, paragraph)
+filtered_words
+
+2b)
+re_pattern=r'\b\d+\b'
+filtered_numbers=re.findall(re_pattern, paragraph)
+filtered_numbers
+
+2c)
+capitalized_words = re.findall(r'\b[A-Z][a-z]*\b', paragraph)
+capitalized_words
+
+3a)alphabetic_words = re.findall(r'\b[a-zA-Z]+\b', paragraph)
+alphabetic_words
+
+3b)
+vowels_start= re.findall(r'\b[aeiouAEIOU]\w*', paragraph)
+vowels_start
+
+#Q4
+
+2)
+def custom_tokenizer(text):
+    pattern = r"\b\w+(?:-\w+)*\b|\b\d+\.\d+\b|\b\d+\b"
+    tokens = re.findall(pattern, text)
+    return tokens
+custom_tokens = custom_tokenizer(paragraph)
+custom_tokens
+3)
+def clean_text(text):
+    text = re.sub(r'[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,3}', '<EMAIL>', text)
+    text = re.sub(r'https?://\S+', '<URL>', text)
+    text = re.sub(r'(?:\+?\d{1,3}[-.\s]?)?(?:\(?\d{3}\)?[-.\s]?)?\d{3}[-.\s]?\d{4}', '<PHONE>', text)
+    return text
+clean_text(paragraph)
+
+
+
+
