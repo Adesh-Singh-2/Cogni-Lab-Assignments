@@ -1,0 +1,276 @@
+
+import string
+import re
+import nltk
+nltk.download('punkt')
+from nltk.tokenize import word_tokenize
+import nltk
+nltk.download('stopwords')
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer,LancasterStemmer,WordNetLemmatizer
+from nltk.tokenize import sent_tokenize
+from nltk import pos_tag
+nltk.download('wordnet')
+from nltk.corpus import wordnet
+
+#Q1
+paragraph='''
+Technology has become the heartbeat of modern life, connecting people across continents at the speed of thought. From artificial intelligence transforming industries to wearable gadgets monitoring health in real-time, it’s revolutionizing how we live, work, and play. The evolution of tech, like self-driving cars and virtual reality, blurs the lines between the physical and digital worlds. It empowers innovation yet sparks ethical debates about its influence on privacy and society. In essence, technology isn’t just about tools—it’s about the endless possibilities they unlock.
+'''
+paragraph
+
+paragraph=paragraph.lower()
+paragraph=paragraph.translate(str.maketrans('', '', string.punctuation))
+paragraph
+
+
+
+words=word_tokenize(paragraph)
+sentences=sent_tokenize(paragraph)
+len(words), len(sentences)
+
+
+stop_words=set(stopwords.words('english'))
+filtered_words=[word for word in words if word not in stop_words]
+len(filtered_words)
+
+import pandas as pd
+df=pd.DataFrame(filtered_words, columns=['word'])
+df.value_counts().reset_index(name='count').rename(columns={'index':'word'}).sort_values(by='count', ascending=False).head(10)
+
+#Q2
+
+paragraph='''
+Technology has become the heartbeat of modern life, connecting people across continents at the speed of thought. From artificial intelligence transforming industries to wearable gadgets monitoring health in real-time, it’s revolutionizing how we live, work, and play. The evolution of tech, like self-driving cars and virtual reality, blurs the lines between the physical and digital worlds. It empowers innovation yet sparks ethical debates about its influence on privacy and society. In essence, technology isn’t just about tools—it’s about the endless possibilities they unlock.
+'''
+paragraph
+
+paragraph=paragraph.lower()
+paragraph=paragraph.translate(str.maketrans('', '', string.punctuation))
+paragraph
+
+
+
+words=word_tokenize(paragraph)
+sentences=sent_tokenize(paragraph)
+len(words), len(sentences)
+
+
+stop_words=set(stopwords.words('english'))
+filtered_words=[word for word in words if word not in stop_words]
+len(filtered_words)
+
+import pandas as pd
+df=pd.DataFrame(filtered_words, columns=['word'])
+df.value_counts().reset_index(name='count').rename(columns={'index':'word'}).sort_values(by='count', ascending=False).head(10)
+
+from sklearn.feature_extraction.text import CountVectorizer
+
+# Create a CountVectorizer instance
+vectorizer = CountVectorizer()
+
+# Fit and transform the filtered words into Bag of Words representation
+bow_matrix = vectorizer.fit_transform([' '.join(filtered_words)])
+
+# Convert the matrix to a DataFrame for better visualization
+bow_df = pd.DataFrame(bow_matrix.toarray(), columns=vectorizer.get_feature_names_out())
+bow_df
+
+
+#Q3
+
+#A)
+from sklearn.feature_extraction.text import CountVectorizer
+
+# Create a CountVectorizer instance
+vectorizer = CountVectorizer()
+
+# Fit and transform the filtered words into Bag of Words representation
+bow_matrix = vectorizer.fit_transform([' '.join(filtered_words)])
+
+# Convert the matrix to a DataFrame for better visualization
+bow_df = pd.DataFrame(bow_matrix.toarray(), columns=vectorizer.get_feature_names_out())
+bow_df
+
+
+#B)
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+# Create a TfidfVectorizer instance
+tfidf_vectorizer = TfidfVectorizer()
+
+# Fit and transform the filtered words into TF-IDF representation
+tfidf_matrix = tfidf_vectorizer.fit_transform([' '.join(filtered_words)])
+
+# Convert the matrix to a DataFrame for better visualization
+tfidf_df = pd.DataFrame(tfidf_matrix.toarray(), columns=tfidf_vectorizer.get_feature_names_out())
+tfidf_df
+
+
+#C)
+# Extract the top 3 keywords for each text based on TF-IDF scores
+top_keywords = tfidf_df.T.nlargest(3, 0).reset_index()
+top_keywords.columns = ['Keyword', 'TF-IDF Score']
+top_keywords
+
+
+#Q4
+text1 = """Artificial Intelligence enables machines to mimic human intelligence.
+It powers applications like speech recognition, image classification, and autonomous driving.
+AI relies on data, algorithms, and models such as neural networks to make decisions.
+It is widely used in healthcare, finance, and customer service automation."""
+
+text2 = """Blockchain is a decentralized digital ledger that records transactions securely.
+It enables peer-to-peer value transfers without intermediaries.
+Cryptographic techniques ensure data immutability and trust.
+Blockchain is foundational to cryptocurrencies like Bitcoin and has applications in supply chain and identity management."""
+
+#i)
+
+# Preprocessing and tokenizing Text 1 (AI)
+text_ai_cleaned = text_ai.lower().translate(str.maketrans('', '', string.punctuation))
+text_ai_tokens = word_tokenize(text_ai_cleaned)
+
+# Preprocessing and tokenizing Text 2 (Blockchain)
+text_blockchain_cleaned = text_blockchain.lower().translate(str.maketrans('', '', string.punctuation))
+text_blockchain_tokens = word_tokenize(text_blockchain_cleaned)
+
+text_ai_tokens, text_blockchain_tokens
+
+#(ii)
+
+
+from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
+
+# a. Jaccard Similarity using sets
+set_ai = set(text_ai_tokens)
+set_blockchain = set(text_blockchain_tokens)
+jaccard_similarity = len(set_ai.intersection(set_blockchain)) / len(set_ai.union(set_blockchain))
+f"Jaccard Similarity: {jaccard_similarity}"
+
+
+
+# b. Cosine Similarity using TfidfVectorizer + cosine_similarity()
+tfidf_matrix_tech = tfidf_vectorizer.fit_transform([text_ai_cleaned, text_blockchain_cleaned])
+cosine_sim = cosine_similarity(tfidf_matrix_tech[0:1], tfidf_matrix_tech[1:2])
+print(f"Cosine Similarity: {cosine_sim[0][0]}")
+
+
+
+c. Analysis
+print('''Jaccard Similarity focuses on the overlap of unique tokens, while Cosine Similarity considers the frequency and importance of terms.
+In this case, Cosine Similarity provides better insights as it captures the importance of terms using TF-IDF weights.''')
+
+
+#Q5
+
+
+from textblob import TextBlob
+from wordcloud import WordCloud
+
+import matplotlib.pyplot as plt
+
+# Step 1: Write a short review
+reviews = [
+    "The product is amazing! It exceeded my expectations and works perfectly.",
+    "The service was okay, but it could have been better.",
+    "I am very disappointed with the product. It broke after one use."
+]
+
+# Step 2: Analyze polarity and subjectivity
+review_analysis = []
+for review in reviews:
+    blob = TextBlob(review)
+    polarity = blob.sentiment.polarity
+    subjectivity = blob.sentiment.subjectivity
+    sentiment = "Positive" if polarity > 0 else "Negative" if polarity < 0 else "Neutral"
+    review_analysis.append((review, polarity, subjectivity, sentiment))
+
+# Convert analysis to DataFrame for better visualization
+review_df = pd.DataFrame(review_analysis, columns=["Review", "Polarity", "Subjectivity", "Sentiment"])
+print(review_df)
+
+# Step 3: Create a word cloud for positive reviews
+positive_reviews = " ".join(review_df[review_df["Sentiment"] == "Positive"]["Review"])
+wordcloud = WordCloud(width=800, height=400, background_color="white").generate(positive_reviews)
+
+# Display the word cloud
+plt.figure(figsize=(10, 5))
+plt.imshow(wordcloud, interpolation="bilinear")
+plt.axis("off")
+plt.title("Word Cloud for Positive Reviews")
+plt.show()
+
+
+
+#Q6
+
+
+
+
+from tensorflow.keras.preprocessing.text import Tokenizer
+from keras.utils import pad_sequences
+from keras.models import Sequential
+from keras.layers import Embedding, LSTM, Dense
+import numpy as np
+
+# Step 1: Choose a paragraph as training data
+training_text = """
+Artificial Intelligence (AI) is transforming the world. It powers applications like virtual assistants, autonomous vehicles, and predictive analytics.
+AI leverages machine learning and deep learning to solve complex problems. The technology is evolving rapidly, enabling breakthroughs in healthcare, finance, and education.
+"""
+
+# Tokenize the text
+tokenizer = Tokenizer()
+tokenizer.fit_on_texts([training_text])
+total_words = len(tokenizer.word_index) + 1
+
+# Create input sequences
+input_sequences = []
+for line in training_text.split("\n"):
+    token_list = tokenizer.texts_to_sequences([line])[0]
+    for i in range(1, len(token_list)):
+        n_gram_sequence = token_list[:i+1]
+        input_sequences.append(n_gram_sequence)
+
+# Pad sequences
+max_sequence_len = max([len(seq) for seq in input_sequences])
+input_sequences = pad_sequences(input_sequences, maxlen=max_sequence_len, padding='pre')
+
+# Split data into predictors and label
+X, y = input_sequences[:, :-1], input_sequences[:, -1]
+y = np.array(y)
+
+# Step 2: Build a simple LSTM model
+model = Sequential()
+model.add(Embedding(total_words, 10, input_length=max_sequence_len-1))
+model.add(LSTM(100))
+model.add(Dense(total_words, activation='softmax'))
+
+model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+
+# Step 3: Train the model
+model.fit(X, y, epochs=100, verbose=1)
+
+# Generate new text
+seed_text = "AI is"
+next_words = 10
+
+for _ in range(next_words):
+    token_list = tokenizer.texts_to_sequences([seed_text])[0]
+    token_list = pad_sequences([token_list], maxlen=max_sequence_len-1, padding='pre')
+    predicted = model.predict(token_list, verbose=0)
+    output_word = ""
+    for word, index in tokenizer.word_index.items():
+        if index == np.argmax(predicted):
+            output_word = word
+            break
+    seed_text += " " + output_word
+
+print(seed_text)
+
+
+
+
+
